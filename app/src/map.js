@@ -1,18 +1,35 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 
-const MapComponent = () => {
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl:
+        'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+    iconUrl:
+        'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+    shadowUrl:
+        'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+});
+const MapComponent = ({startCoords,endCoords}) => {
     return (
         <MapContainer
-            center={[12.9716, 77.5946]}   // Example: Bangalore
-            zoom={13}
-            style={{ height: "400px", width: "100%" }}
+            center={[47.6038, -122.3301]} // Seattle
+            zoom={12}
+            scrollWheelZoom={true}
+            doubleClickZoom={true}
+            zoomControl={true}
+            style={{ height: '100vh', width: '100%' }}
         >
             <TileLayer
+                attribution='© OpenStreetMap contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-
-            <Marker position={[12.9716, 77.5946]}>
-                <Popup>Hello from here!</Popup>
+            <Marker position={[47.6038, -122.3301]}>
+                <Popup>
+                    Seattle
+                </Popup>
             </Marker>
         </MapContainer>
     );
