@@ -9,7 +9,9 @@ function App() {
   const [end, setEnd] = useState('');
   const [startCoords, setStartCoords] = useState(null);
   const [endCoords, setEndCoords] = useState(null);
- const [routeCoords, setRouteCoords] = useState(null);
+  const [routeCoords, setRouteCoords] = useState(null);
+  const [distance, setDistance] = useState(null);
+  const [duration, setDuration] = useState(null);
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
@@ -36,8 +38,10 @@ function App() {
     setStartCoords(startLatLong);
     setEndCoords(endLatLong)
 
-    const route = await fetchRoute(startLatLong,endLatLong);
-   setRouteCoords(route)
+    const routeData = await fetchRoute(startLatLong, endLatLong);
+    setRouteCoords(routeData.coords)
+    setDistance((routeData.distance * 0.000621371).toFixed(2))
+    setDuration((routeData.duration / 60).toFixed(0))
   }
 
   const fetchRoute = async (start, end) => {
@@ -46,10 +50,15 @@ function App() {
       `?overview=full&geometries=geojson`;
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data,"data")
-    return data.routes[0].geometry.coordinates.map(([lon,lat])=> [lat, lon])
+    console.log(data, "data")
+    const route = data.routes[0]
+    return {
+      coords: route.geometry.coordinates.map(([lon, lat]) => [lat, lon]),
+      distance: route.distance,
+      duration: route.duration
+    }
   }
-
+  console.log(distance, "distance", duration, "dura")
 
 
   return (
@@ -57,6 +66,12 @@ function App() {
 
       <div id="map">
         <MapComponent startCoords={startCoords} endCoords={endCoords} routeCoords={routeCoords} />
+        {distance !== null && duration !== null && (
+          <div className="routeInfo">
+            Distance: {distance} miles
+            Duration: {duration} min
+          </div>
+        )}
         <form className="searchForm" onSubmit={handleSubmitForm}>
           <input
             placeholder='write the start location'
