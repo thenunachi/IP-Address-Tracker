@@ -9,6 +9,8 @@ function App() {
   const [end, setEnd] = useState('');
   const [startCoords, setStartCoords] = useState(null);
   const [endCoords, setEndCoords] = useState(null);
+ const [routeCoords, setRouteCoords] = useState(null);
+
   const handleSubmitForm = async (e) => {
     e.preventDefault();
 
@@ -18,7 +20,7 @@ function App() {
       const url = `https://nominatim.openstreetmap.org/search?format=json&q=${place}`
       const response = await fetch(url);
       const result = await response.json()
-      console.log(result, "result")
+
       return result
     }
 
@@ -26,13 +28,26 @@ function App() {
     const endQueryResult = await fetchLocations(end)
     if (!startQueryResult.length || !endQueryResult.length) return;
     console.log(parseFloat(startQueryResult[0].lat), "stat")
-
+    console.log(parseFloat(endQueryResult[0].lat), "end")
     const startLatLong = [parseFloat(startQueryResult[0].lat),
     parseFloat(startQueryResult[0].lon)
     ]
-    const endLatLong = [parseFloat(endQueryResult[0].lat), parseFloat(endQueryResult[0].lat)]
+    const endLatLong = [parseFloat(endQueryResult[0].lat), parseFloat(endQueryResult[0].lon)]
     setStartCoords(startLatLong);
     setEndCoords(endLatLong)
+
+    const route = await fetchRoute(startLatLong,endLatLong);
+   setRouteCoords(route)
+  }
+
+  const fetchRoute = async (start, end) => {
+    const url = `https://router.project-osrm.org/route/v1/driving/` +
+      `${start[1]},${start[0]};${end[1]},${end[0]}` +
+      `?overview=full&geometries=geojson`;
+    const res = await fetch(url);
+    const data = await res.json();
+    console.log(data,"data")
+    return data.routes[0].geometry.coordinates.map(([lon,lat])=> [lat, lon])
   }
 
 
@@ -41,7 +56,7 @@ function App() {
     <div className="appContainer">
 
       <div id="map">
-        <MapComponent startCoords={startCoords} endCoords={endCoords} />
+        <MapComponent startCoords={startCoords} endCoords={endCoords} routeCoords={routeCoords} />
         <form className="searchForm" onSubmit={handleSubmitForm}>
           <input
             placeholder='write the start location'

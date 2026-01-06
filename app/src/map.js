@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -12,10 +12,12 @@ L.Icon.Default.mergeOptions({
     shadowUrl:
         'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
-const MapComponent = ({startCoords,endCoords}) => {
+const MapComponent = ({ startCoords, endCoords,routeCoords }) => {
+    console.log(endCoords,"endCoords")
+    const center = startCoords || [47.6038, -122.3301]
     return (
         <MapContainer
-            center={[47.6038, -122.3301]} // Seattle
+            center={center} // Seattle
             zoom={12}
             scrollWheelZoom={true}
             doubleClickZoom={true}
@@ -26,11 +28,23 @@ const MapComponent = ({startCoords,endCoords}) => {
                 attribution='© OpenStreetMap contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={[47.6038, -122.3301]}>
-                <Popup>
-                    Seattle
-                </Popup>
-            </Marker>
+            {startCoords && (
+                <Marker position={startCoords}>
+                    <Popup>
+                        Start
+                    </Popup>
+                </Marker>
+            )}
+            {endCoords && (
+                <Marker position={endCoords}>
+                    <Popup>
+                        End
+                    </Popup>
+                </Marker>
+            )}
+            {routeCoords && (
+                <Polyline positions={routeCoords} />
+            )}
         </MapContainer>
     );
 }
