@@ -12,8 +12,8 @@ L.Icon.Default.mergeOptions({
     shadowUrl:
         'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
-const MapComponent = ({ startCoords, endCoords,routeCoords }) => {
-    console.log(endCoords,"endCoords")
+const MapComponent = ({ startCoords, endCoords, routeCoords,travelMode }) => {
+    console.log(endCoords, "endCoords")
     const center = startCoords || [47.6038, -122.3301]
     return (
         <MapContainer
@@ -43,7 +43,15 @@ const MapComponent = ({ startCoords, endCoords,routeCoords }) => {
                 </Marker>
             )}
             {routeCoords && (
-                <Polyline positions={routeCoords} />
+                <Polyline positions={routeCoords}
+                    pathOptions={{
+                        color:
+                            travelMode === 'driving'
+                                ? 'blue'
+                                : travelMode === 'foot'
+                                    ? 'green'
+                                    : 'orange'
+                    }} />
             )}
         </MapContainer>
     );

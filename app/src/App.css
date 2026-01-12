@@ -10,7 +10,7 @@
 .searchForm {
   position: absolute;
   top: 20px;
-  left: 20px;
+  left: 77px;
   z-index: 1000; /* important: above map */
   background: white;
   padding: 12px;
