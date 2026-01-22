@@ -1,32 +1,212 @@
-#map{
-  height: 180px;
+/* RESET */
+* {
+  box-sizing: border-box;
 }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* MAIN CONTAINER */
 .appContainer {
   position: relative;
   height: 100vh;
+  width: 100vw;
+}
+
+/* MAP */
+.leaflet-container {
+  height: 100%;
   width: 100%;
 }
 
+/* SEARCH FORM CARD */
 .searchForm {
   position: absolute;
-  top: 20px;
-  left: 77px;
-  z-index: 1000; /* important: above map */
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  max-width: 420px;
   background: white;
-  padding: 12px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  padding: 14px;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
 }
+
+/* INPUTS */
+.searchForm input,
+.searchForm select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+}
+
+.searchForm input:focus,
+.searchForm select:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+/* BUTTON */
+.searchForm button {
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: #4a90e2;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.searchForm button:hover {
+  background: #357abd;
+}
+
+/* CHECKBOX + SELECT ROW */
+.searchForm label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+/* ROUTE STATS */
+.routeStats {
+  margin-top: 6px;
+  padding: 10px;
+  background: #f3f6fa;
+  border-radius: 10px;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* AUTOCOMPLETE */
+.suggestions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.suggestions li {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.suggestions li:hover {
+  background: #f1f5ff;
+}
+
+/* NAVIGATION / PLACE INFO */
 .routeInfo {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 1000; /* MUST be higher than leaflet panes */
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  max-width: 420px;
   background: white;
-  padding: 12px 16px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  font-weight: bold;
+  padding: 14px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  z-index: 1000;
+  animation: slideUp 0.3s ease-out;
+}
+
+.routeInfo h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.routeInfo img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.routeInfo p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #444;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translate(-50%, 20px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+@media (min-width: 768px) {
+  .searchForm {
+    left: 20px;
+    transform: none;
+    max-width: 360px;
+  }
+
+  .routeInfo {
+    right: 20px;
+    left: auto;
+    transform: none;
+    max-width: 360px;
+  }
+}
+
+.navigationPanel {
+  position: absolute;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  max-width: 420px;
+  background: white;
+  padding: 14px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  z-index: 1000;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.navigationPanel h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.navigationPanel ol {
+  padding-left: 18px;
+  margin: 0;
+}
+
+.navigationPanel li {
+  font-size: 14px;
+  margin-bottom: 6px;
+  line-height: 1.4;
+  color: #444;
+}
+.navigationPanel li.activeStep {
+  font-weight: 600;
+  color: #2a76f3;
+  background: #e8f0fe;
+  border-radius: 6px;
+  padding: 4px 6px;
 }
