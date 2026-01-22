@@ -64,7 +64,9 @@ const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
     const res = await fetch(url, {
       method: 'POST',
+      mode: 'cors',
       headers: {
+      
         'Content-Type': 'application/json',
         Authorization: ORS_API_KEY
       },
