@@ -1,0 +1,4 @@
+snakeGame/frontend/node_modules/
+snakeGame/frontend/dist/
+snakeGame/api/__pycache__/
+snakeGame/api/*.pyc
