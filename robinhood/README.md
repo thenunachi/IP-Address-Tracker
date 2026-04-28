@@ -1,4 +1,4 @@
-# Robinhood — Paper Trading App
+# Trade — Paper Trading App
 
 A fully-featured stock trading simulator built with React and Vite. No real money, no API keys — everything runs locally with simulated live prices.
 
@@ -117,3 +117,4 @@ Click the ⌨️ button in the sidebar to see the shortcut cheatsheet at any tim
 - All prices are simulated — no Finnhub, Alpha Vantage, or any other API key required
 - Data resets on hard refresh (price history is re-generated each session); portfolio state persists via `localStorage`
 - The background images are loaded from Unsplash — they require an internet connection to display but the app works fully offline without them
+# trading
